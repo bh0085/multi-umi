@@ -168,6 +168,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
         p.terminate()
 
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
+    logger.info('Results: %d', "\n ".join(outs))
 
 
     raise Exception()
