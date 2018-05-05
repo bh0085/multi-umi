@@ -90,7 +90,9 @@ def read_core(start_record):
             i1_map[ids[i]] = i1s[i]
             i2_map[ids[i]] = i2s[i]
 
-        return r1_map, r2_map, i1_map, i2_map
+        logger.info('Returning from core offset %d with %d records', start_record, len(ids))
+
+        return [r1_map, r2_map, i1_map, i2_map]
 
 
 def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_reads=10000):
