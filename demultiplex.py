@@ -66,6 +66,8 @@ def get_sample_id(i1, i2, sample_names):
 
 def read_core(start_record):
 
+        return 100
+
         stride=multiglobals.stride
         r1s = [fq("".join(multiglobals.read1),start=start_record,max_count=stride)]
         r2s = [fq("".join(multiglobals.read2),start=start_record,max_count=stride)]
@@ -158,7 +160,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
 
     from contextlib import closing
-    logger.info('Launching a pool with %d ores', cores)
+    logger.info('Launching a pool with %d cores', cores)
 
     with closing(Pool(processes=cores)) as p:
         outs = p.map(read_core, [i*stride for i in range(cores)])
