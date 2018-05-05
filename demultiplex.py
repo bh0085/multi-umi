@@ -9,6 +9,16 @@ import logging
 
 from multiprocessing import Pool, Value, Array
 
+import multiglobals # anything (empty .py file)
+multiglobals.read1 = ""
+multiglobals.read2 = ""
+multiglobals.index1 = ""
+multiglobals.index2 = ""
+multiglobals.stride = ""
+multiglobals.samplenames = []
+multiglobals.max_count = ""
+
+
 
 __author__ = 'Martin Aryee'
 
@@ -56,18 +66,17 @@ def get_sample_id(i1, i2, sample_names):
 
 def read_core(start_record):
 
-
-        r1s = [fq("".join(sharedRead1),start=start_record,count=sharedStride)]
-        r2s = [fq("".join(sharedRead2),start=start_record,count=sharedStride)]
-        i1s = [fq("".join(sharedIndex1),start=start_record,count=sharedStride)]
-        i2s = [fq("".join(sharedIndex2),start=start_record,count=sharedStride)]
+        stride=multiglobals.stride
+        r1s = [fq("".join(multiglobals.read1),start=start_record,count=stride)]
+        r2s = [fq("".join(multiglobals.read2),start=start_record,count=stride)]
+        i1s = [fq("".join(multiglobals.index1),start=start_record,count=stride)]
+        i2s = [fq("".join(multiglobals.index2),start=start_record,count=stride)]
 
         if len(r1s) == 0:
             return None
 
-        snames = " ".split("".join(sharedSampleNames))
 
-        ids = [get_sample_id(i1,i2,snames) for i1, i2 in i1s[start_record:start_record+sharedStride], i2s[start_record:start_record+ sharedStride]]
+        ids = [get_sample_id(i1,i2,multiglobals.sample_names) for i1, i2 in i1s[start_record:start_record+stride], i2s[start_record:start_record+ stride]]
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
@@ -127,15 +136,24 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     print(read1)
 
 
-    sharedTotalCount = Value("l", total_count)
-    sharedStride = Value("l", stride)
+    #sharedTotalCount = Value("l", total_count)
+    #sharedStride = Value("l", stride)
 
-    sharedRead1 = Array('u', [e for e in read1])
-    sharedRead2 = Array('u', [e for e in read2])
-    sharedIndex1 = Array('u', [e for e in index1])
-    sharedIndex2 = Array('u', [e for e in index2])
+    #sharedRead1 = Array('u', [e for e in read1])
+    #sharedRead2 = Array('u', [e for e in read2])
+    #sharedIndex1 = Array('u', [e for e in index1])
+    #sharedIndex2 = Array('u', [e for e in index2])
 
-    sharedSampleNames = Array('u',[e for e in " ".join(sample_names)])
+    #sharedSampleNames = Array('u',[e for e in " ".join(sample_names)])
+
+    multiglobals.read1=read1
+    multiglobals.read2=read2
+    multiglobals.index1=index1
+    multiglobals.index2=index2
+    multiglobals.sample_names = sample_names
+    multiglobals.stride=stride
+    multiglobals.total_count=total_count
+
 
     from contextlib import closing
     logger.info('Launching a pool with %d ores', cores)
