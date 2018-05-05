@@ -7,6 +7,9 @@ import argparse
 import time
 import logging
 
+from multiprocessing import Pool, Value, Array
+
+
 __author__ = 'Martin Aryee'
 
 logger = logging.getLogger('root')
@@ -51,16 +54,18 @@ def get_sample_id(i1, i2, sample_names):
         return sample_barcode
 
 
-def read_core(read1,read2,index1,index2,sample_names,start_record,stride):
-        r1s = [fq(read1,start=start_record,count=stride)]
-        r2s = [fq(read2,start=start_record,count=stride)]
-        i1s = [fq(index1,start=start_record,count=stride)]
-        i2s = [fq(index2,start=start_record,count=stride)]
+def read_core(start_record)
+
+
+        r1s = [fq(sharedRead1,start=start_record,count=sharedStride)]
+        r2s = [fq(sharedRead2,start=start_record,count=sharedStride)]
+        i1s = [fq(sharedIndex1,start=start_record,count=sharedStride)]
+        i2s = [fq(sharedIndex2,start=start_record,count=sharedStride)]
 
         if len(r1s) == 0:
             return None
 
-        ids = [get_sample_id(i1,i2,sample_names) for i1, i2 in i1s[start_record:end_record], i2s[start_record:end_record]]
+        ids = [get_sample_id(i1,i2,sharedSampleNames) for i1, i2 in i1s[start_record:start_record+sharedStride], i2s[start_record:start_record+ sharedStride]]
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
@@ -117,22 +122,29 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     all_i1s = {}
     all_i2s = {}
 
-    while True:
-        for i,c in range(cores):
+    sharedRead1 = Value('read1', read1, lock=False)
+    sharedRead2 = Value('read2', read2, lock=False)
+    sharedIndex1 = Value('index1', index1, lock=False)
+    sharedIndex2 = Value('index2', index2, lock=False)
+    sharedTotalCount = Value('total_count', total_count, lock=False)
+    sharedStride = Value('stride', stride, lock=False)
 
-            start_record = i*stride
-            end_record=(i+1)*stride
-            out = read_core(read1,read2,index1,index2,sample_names,start_record,stride)
-            if out == None:
+    sharedSampleNames = Array('sample_names',sample_names,lock=False)
+
+    with Pool(cores) as p:
+        outs = p.map(read_core, [i*stride for i in range(cores)])
+
+
+    for e in outs:
+            if e == None:
                 break
             else:
-                total_count += len(out[0])
+                total_count += len(e[0])
 
-            all_r1s.extend(out[0])
-            all_r2s.extend(out[1])
-            all_i1s.extend(out[2])
-            all_i2s.extend(out[3])
-        break
+            all_r1s.extend(e[0])
+            all_r2s.extend(e[1])
+            all_i1s.extend(e[2])
+            all_i2s.extend(e[3])
 
     for sample_id in all_r1s.keys():
 
