@@ -144,7 +144,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
         outs = p.map(read_core, [i*stride for i in range(cores)])
         pool.terminate()
 
-    logger.info('Pool yielded %d results from %d cores', len(outs) cores)
+    logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
 
     raise Exception()
