@@ -57,10 +57,10 @@ def get_sample_id(i1, i2, sample_names):
 def read_core(start_record):
 
 
-        r1s = [fq(sharedRead1,start=start_record,count=sharedStride)]
-        r2s = [fq(sharedRead2,start=start_record,count=sharedStride)]
-        i1s = [fq(sharedIndex1,start=start_record,count=sharedStride)]
-        i2s = [fq(sharedIndex2,start=start_record,count=sharedStride)]
+        r1s = [fq("".join(sharedRead1),start=start_record,count=sharedStride)]
+        r2s = [fq("".join(sharedRead2),start=start_record,count=sharedStride)]
+        i1s = [fq("".join(sharedIndex1),start=start_record,count=sharedStride)]
+        i2s = [fq("".join(sharedIndex2),start=start_record,count=sharedStride)]
 
         if len(r1s) == 0:
             return None
@@ -114,8 +114,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     start = time.time()
 
     cores = 10
-    stride = 10000.0
-    total_count = 0.0
+    stride = 10000
+    total_count = 0
 
     all_r1s = {}
     all_r2s = {}
@@ -125,13 +125,13 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     print(read1)
 
 
-    sharedTotalCount = Value('total_count', total_count)
-    sharedStride = Value('stride', stride)
+    sharedTotalCount = Value("l", total_count)
+    sharedStride = Value("l", stride)
 
-    sharedRead1 = Value('read1', read1)
-    sharedRead2 = Value('read2', read2)
-    sharedIndex1 = Value('index1', index1)
-    sharedIndex2 = Value('index2', index2)
+    sharedRead1 = Array('u', [e for e in read1])
+    sharedRead2 = Array('u', [e for e in read2])
+    sharedIndex1 = Array('u', [e for e in index1])
+    sharedIndex2 = Array('u', [e for e in index2])
 
     sharedSampleNames = Array('sample_names',sample_names,lock=False)
 
