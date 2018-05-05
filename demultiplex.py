@@ -66,7 +66,6 @@ def get_sample_id(i1, i2, sample_names):
 
 def read_core(start_record):
 
-        return "A"
 
         stride=multiglobals.stride
         r1s = [fq("".join(multiglobals.read1),start=start_record,max_count=stride)]
