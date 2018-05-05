@@ -65,7 +65,9 @@ def read_core(start_record):
         if len(r1s) == 0:
             return None
 
-        ids = [get_sample_id(i1,i2,sharedSampleNames) for i1, i2 in i1s[start_record:start_record+sharedStride], i2s[start_record:start_record+ sharedStride]]
+        snames = " ".split("".join(sharedSampleNames))
+
+        ids = [get_sample_id(i1,i2,snames) for i1, i2 in i1s[start_record:start_record+sharedStride], i2s[start_record:start_record+ sharedStride]]
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
@@ -133,7 +135,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     sharedIndex1 = Array('u', [e for e in index1])
     sharedIndex2 = Array('u', [e for e in index2])
 
-    sharedSampleNames = Array('sample_names',sample_names,lock=False)
+    sharedSampleNames = Array('u',[e for e in " ".join(sample_names)])
 
     with Pool(cores) as p:
         outs = p.map(read_core, [i*stride for i in range(cores)])
