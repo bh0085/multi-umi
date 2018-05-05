@@ -66,7 +66,7 @@ def get_sample_id(i1, i2, sample_names):
 
 def read_core(start_record):
 
-        return 100
+        return "A"
 
         stride=multiglobals.stride
         r1s = [fq("".join(multiglobals.read1),start=start_record,max_count=stride)]
@@ -74,8 +74,9 @@ def read_core(start_record):
         i1s = [fq("".join(multiglobals.index1),start=start_record,max_count=stride)]
         i2s = [fq("".join(multiglobals.index2),start=start_record,max_count=stride)]
 
+
         if len(r1s) == 0:
-            return None
+            return "HIHIHI"
 
 
         ids = [get_sample_id(i1,i2,multiglobals.sample_names) for i1, i2 in i1s[start_record:start_record+stride], i2s[start_record:start_record+ stride]]
