@@ -137,10 +137,17 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
     sharedSampleNames = Array('u',[e for e in " ".join(sample_names)])
 
-    with Pool(cores) as p:
+    from contextlib import closing
+    logger.info('Launching a pool with %d ores', cores)
+
+    with closing(Pool(processes=cores)) as p:
         outs = p.map(read_core, [i*stride for i in range(cores)])
+        pool.terminate()
+
+    logger.info('Pool yielded %d results from %d cores', len(outs) cores)
 
 
+    raise Exception()
     for e in outs:
             if e == None:
                 break
