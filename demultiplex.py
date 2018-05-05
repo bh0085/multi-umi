@@ -78,7 +78,7 @@ def read_core(start_record):
             return "HIHIHI"
 
 
-        ids = [get_sample_id(i1,i2,multiglobals.sample_names) for i1, i2 in i1s[start_record:start_record+stride], i2s[start_record:start_record+ stride]]
+        ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(start_record,start_record+stride)]
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
