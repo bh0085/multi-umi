@@ -117,7 +117,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     all_i1s = {}
     all_i2s = {}
 
-    while True
+    while True:
         for i,c in range(cores):
 
             start_record = i*stride
