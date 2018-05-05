@@ -114,8 +114,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     start = time.time()
 
     cores = 10
-    stride = 10000
-    total_count = 0
+    stride = 10000.0
+    total_count = 0.0
 
     all_r1s = {}
     all_r2s = {}
@@ -124,12 +124,14 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
     print(read1)
 
-    sharedRead1 = Value('read1', read1, lock=False)
-    sharedRead2 = Value('read2', read2, lock=False)
-    sharedIndex1 = Value('index1', index1, lock=False)
-    sharedIndex2 = Value('index2', index2, lock=False)
-    sharedTotalCount = Value('total_count', total_count, lock=False)
-    sharedStride = Value('stride', stride, lock=False)
+
+    sharedTotalCount = Value('total_count', total_count)
+    sharedStride = Value('stride', stride)
+
+    sharedRead1 = Value('read1', read1)
+    sharedRead2 = Value('read2', read2)
+    sharedIndex1 = Value('index1', index1)
+    sharedIndex2 = Value('index2', index2)
 
     sharedSampleNames = Array('sample_names',sample_names,lock=False)
 
