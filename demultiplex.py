@@ -54,7 +54,7 @@ def get_sample_id(i1, i2, sample_names):
         return sample_barcode
 
 
-def read_core(start_record)
+def read_core(start_record):
 
 
         r1s = [fq(sharedRead1,start=start_record,count=sharedStride)]
