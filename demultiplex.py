@@ -161,7 +161,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
     from contextlib import closing
     with closing(Pool(processes=cores)) as p:
-        params = [i*stride for i in range(cores*2)]
+        params = [i*stride for i in range(cores*10)]
         logger.info('PARAMETERS {0}'.format(params))
         outs = p.map(read_core, params)
         p.terminate()
