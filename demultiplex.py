@@ -33,7 +33,7 @@ def split_file(fname,lines_per_file):
     count = 0
     file_count = 0
     buffer=[]
-    with open(fname as fopen):
+    with open(fname) as fopen:
         while True
             l = fopen.readline()
             if not l: break
