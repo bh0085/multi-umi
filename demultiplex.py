@@ -91,6 +91,8 @@ def read_core(start_record):
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
 
         logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
+        logger.info('i1s length is {0}, i2s is {1} with stride {2} '.format(len(i1s),len(i2s),stride))
+
 
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
         return [["AB"],["AC"],["AB"],["BC"]]
