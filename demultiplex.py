@@ -151,10 +151,10 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
         if out == None: break
         else: total_count += len(e[0])
         for k in out[0].keys():
-            if all_r1s[k]=all_r1s.get(k,[])+out[0][k]
-            if all_r2s[k]=all_r2s.get(k,[])+out[1][k]
-            if all_i1s[k]=all_i1s.get(k,[])+out[2][k]
-            if all_i2s[k]=all_i2s.get(k,[])+out[3][k]
+            all_r1s[k]=all_r1s.get(k,[])+out[0][k]
+            all_r2s[k]=all_r2s.get(k,[])+out[1][k]
+            all_i1s[k]=all_i1s.get(k,[])+out[2][k]
+            all_i2s[k]=all_i2s.get(k,[])+out[3][k]
 
     for sample_id in all_r1s.keys():
         if len(all_r1s[sample_id]) >= min_reads:
