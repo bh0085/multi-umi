@@ -75,7 +75,7 @@ def read_core(start_record):
 
 
 
-        ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(start_record,start_record+stride)]
+        ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
