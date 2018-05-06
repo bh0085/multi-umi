@@ -38,10 +38,21 @@ def fq(file, start=0, max_count=-1):
     else:
         fastq = open(file, 'r')
     with fastq as f:
-        if start>0:
-            junk = f.readlines(4*start)
+        #if start>0:
+        #    junk = f.readlines(4*start)
+
+
+        #        logger.info('Read %d into junk!',start_record)
 
         while True:
+            if count <start:
+                f.readline()
+                f.readline()
+                f.readline()
+                f.readline()
+                count+=1
+                continue
+
             if max_count >0 and count >max_count: break
             count+=1
 
@@ -68,6 +79,10 @@ def read_core(start_record):
 
 
         stride=multiglobals.stride
+
+        logger.info('Start point %d',start_record)
+
+
         r1s = list(fq("".join(multiglobals.read1),start=start_record,max_count=stride))
         r2s = list(fq("".join(multiglobals.read2),start=start_record,max_count=stride))
         i1s = list(fq("".join(multiglobals.index1),start=start_record,max_count=stride))
@@ -143,7 +158,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
     from contextlib import closing
     with closing(Pool(processes=cores)) as p:
-        outs = p.map(read_core, [i*stride for i in range(cores*5)])
+        outs = p.map(read_core, [i*stride for i in range(cores*1)])
         p.terminate()
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
