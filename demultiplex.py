@@ -142,7 +142,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     start = time.time()
 
     cores = 20
-    stride = 10000
+    stride = 1000
     total_count = 0
 
     all_r1s = {}
