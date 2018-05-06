@@ -76,7 +76,7 @@ def get_sample_id(i1, i2, sample_names):
 
 
 def read_core(start_record):
-        read[1,2,3,4]
+        return [1,2,3,4]
 
         stride=multiglobals.stride
 
