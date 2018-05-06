@@ -85,10 +85,10 @@ def read_core(start_record):
         logger.info('Start point %d',start_record)
 
 
-        r1s = list(fq("".join(multiglobals.read1),start=start_record,max_count=stride))
-        r2s = list(fq("".join(multiglobals.read2),start=start_record,max_count=stride))
-        i1s = list(fq("".join(multiglobals.index1),start=start_record,max_count=stride))
-        i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
+        r1s = list(fq("".join(multiglobals.read1),start=start_record,max_count=stride+start_record))
+        r2s = list(fq("".join(multiglobals.read2),start=start_record,max_count=stride+start_record))
+        i1s = list(fq("".join(multiglobals.index1),start=start_record,max_count=stride+start_record))
+        i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride+start_record))
 
         logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
         logger.info('i1s length is {0}, i2s is {1} with stride {2} and start {3}'.format(len(i1s),len(i2s),stride, start_record))
