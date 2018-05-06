@@ -39,7 +39,7 @@ def split_file(fname,lines_per_file):
             if not l: break
             buffer += [l]
             if len(buffer) == lines_per_file:
-                with open(fname+".split.{0}.{1}".format(lines_per_file,file_count)) as subf_open:
+                with open(fname+".split.{0}.{1}".format(lines_per_file,file_count),"w") as subf_open:
                     subf_open.write("\n".join(buffer))
                     file_count+=1
                     buffer=[]
