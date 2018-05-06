@@ -73,6 +73,8 @@ def read_core(start_record):
         i1s = list(fq("".join(multiglobals.index1),start=start_record,max_count=stride))
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
 
+        logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
+        
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
 
         keys = set(ids)
@@ -122,7 +124,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     start = time.time()
 
     cores = 40
-    stride = 1000000
+    stride = 10000
     total_count = 0
 
     all_r1s = {}
@@ -130,6 +132,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     all_i1s = {}
     all_i2s = {}
 
+    multiglobals.starttime=start
     multiglobals.read1=read1
     multiglobals.read2=read2
     multiglobals.index1=index1
