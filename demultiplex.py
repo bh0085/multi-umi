@@ -163,6 +163,9 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
             all_i1s.update(e[2])
             all_i2s.update(e[3])
 
+    logger.info('Out dir {0}'.format( out_dir))
+    logger.info('Joined {0}'.format('%s.r1.fastq' % sample_id))
+
     for sample_id in all_r1s.keys():
 
         if len(all_r1s[sample_id]) >= min_reads:
