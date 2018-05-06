@@ -82,7 +82,6 @@ def read_core(start_record):
 
         stride=multiglobals.stride
 
-        logger.info('Start point %d',start_record)
 
 
         r1s = list(fq("".join(multiglobals.read1),start=start_record,max_count=stride+start_record))
@@ -91,7 +90,6 @@ def read_core(start_record):
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride+start_record))
 
         logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
-        logger.info('i1s length is {0}, i2s is {1} with stride {2} and start {3}'.format(len(i1s),len(i2s),stride, start_record))
 
 
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
@@ -111,7 +109,6 @@ def read_core(start_record):
             i1_map[ids[i]] = i1s[i]
             i2_map[ids[i]] = i2s[i]
 
-        logger.info('out value is {0}'.format(r1_map.keys()))
 
         return [r1_map, r2_map, i1_map, i2_map]
 
@@ -147,8 +144,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     #for r1,r2,i1,i2 in itertools.islice(it, 0, 100):
     start = time.time()
 
-    cores = 5
-    stride = 1000
+    cores = 40
+    stride = 1000000
     total_count = 0
 
     all_r1s = {}
@@ -169,7 +166,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     with closing(Pool(processes=cores)) as p:
         #params = [i*stride for i in range(cores*10)]
         #logger.info('PARAMETERS {0}'.format(params))
-        outs = p.map(read_core, [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000, 21000, 22000, 23000, 24000, 25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000, 34000, 35000, 36000, 37000, 38000, 39000, 40000, 41000, 42000, 43000, 44000, 45000, 46000, 47000, 48000, 49000])
+        outs = p.map(read_core, [i*stride for i in range(cores)*5])
 
         p.terminate()
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
