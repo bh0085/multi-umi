@@ -76,7 +76,7 @@ def get_sample_id(i1, i2, sample_names):
 
 
 def read_core(start_record):
-        return [1,2,3,4]
+        #return [1,2,3,4]
 
         stride=multiglobals.stride
 
@@ -97,6 +97,9 @@ def read_core(start_record):
         r2_map = dict([(k,[]) for k in keys])
         i1_map = dict([(k,[]) for k in keys])
         i2_map = dict([(k,[]) for k in keys])
+
+        logger.info('keys are {0}'.format(" "join(list(keys))))
+
 
         for i,e in enumerate(ids):
             r1_map[ids[i]] = r1s[i]
