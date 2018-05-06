@@ -74,7 +74,7 @@ def read_core(start_record):
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
 
         logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
-        
+
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
 
         keys = set(ids)
@@ -123,8 +123,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     #for r1,r2,i1,i2 in itertools.islice(it, 0, 100):
     start = time.time()
 
-    cores = 40
-    stride = 10000
+    cores = 5
+    stride = 1000000
     total_count = 0
 
     all_r1s = {}
@@ -141,10 +141,9 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     multiglobals.stride=stride
     multiglobals.total_count=total_count
 
-
     from contextlib import closing
     with closing(Pool(processes=cores)) as p:
-        outs = p.map(read_core, [i*stride for i in range(cores*100)])
+        outs = p.map(read_core, [i*stride for i in range(cores*5)])
         p.terminate()
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
