@@ -82,8 +82,6 @@ def read_core(start_record):
         i2_map = dict([(k,[]) for k in keys])
 
         for i,e in enumerate(ids):
-            logger.info('sample_id {0}'.format(e))
-
             r1_map[ids[i]] = r1s[i]
             r2_map[ids[i]] = r2s[i]
             i1_map[ids[i]] = i1s[i]
@@ -95,8 +93,6 @@ def read_core(start_record):
 def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_reads=10000):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    logger.info('Out dir {0}'.format( out_dir))
-
 
     if type(sample_barcodes) != dict:
         sample_names = {}
@@ -144,12 +140,9 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
 
     from contextlib import closing
-    logger.info('Launching a pool with %d cores', cores)
-
     with closing(Pool(processes=cores)) as p:
         outs = p.map(read_core, [i*stride for i in range(cores*100)])
         p.terminate()
-
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
     for e in outs:
@@ -160,10 +153,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
             all_i1s.update(e[2])
             all_i2s.update(e[3])
 
-    #logger.info('Out dir {0}'.format( out_dir))
     for sample_id in all_r1s.keys():
         if len(all_r1s[sample_id]) >= min_reads:
-            #logger.info('Joined {0}'.format('%s.r1.fastq' % sample_id))
             outfiles_r1[sample_id] = open(os.path.join(out_dir, '%s.r1.fastq' % sample_id), 'w')
             outfiles_r2[sample_id] = open(os.path.join(out_dir, '%s.r2.fastq' % sample_id), 'w')
             outfiles_i1[sample_id] = open(os.path.join(out_dir, '%s.i1.fastq' % sample_id), 'w')
@@ -209,7 +200,6 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     undetermined_r2.close()
     undetermined_i1.close()
     undetermined_i2.close()
-
 
     logger.info('Wrote FASTQs for the %d sample barcodes out of %d with at least %d reads.', len(outfiles_r1), total_count, min_reads)
 
