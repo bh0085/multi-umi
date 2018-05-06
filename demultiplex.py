@@ -89,6 +89,9 @@ def read_core(start_record):
             i1_map[ids[i]] = i1s[i]
             i2_map[ids[i]] = i2s[i]
 
+            logger.info(r1s[i])
+
+
         logger.info('Returning from core offset %d with %d records', start_record, len(ids))
 
         return [r1_map, r2_map, i1_map, i2_map]
