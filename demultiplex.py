@@ -123,7 +123,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     #for r1,r2,i1,i2 in itertools.islice(it, 0, 100):
     start = time.time()
 
-    cores = 10
+    cores = 20
     stride = 500000
     total_count = 0
 
