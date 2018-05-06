@@ -98,7 +98,7 @@ def read_core(start_record):
         i1_map = dict([(k,[]) for k in keys])
         i2_map = dict([(k,[]) for k in keys])
 
-        logger.info('keys are {0}'.format(" "join(list(keys))))
+        logger.info('keys are {0}'.format(" ".join(list(keys))))
 
 
         for i,e in enumerate(ids):
