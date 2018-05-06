@@ -18,8 +18,6 @@ multiglobals.stride = ""
 multiglobals.samplenames = []
 multiglobals.max_count = ""
 
-
-
 __author__ = 'Martin Aryee'
 
 logger = logging.getLogger('root')
@@ -30,6 +28,22 @@ logger = logging.getLogger('root')
 #args['read2'] = os.path.join(base, 'Undetermined_S0_L001_R2_001.fastq.gz')
 #args['index1'] = os.path.join(base, 'Undetermined_S0_L001_I1_001.fastq.gz')
 #args['index2'] = os.path.join(base, 'Undetermined_S0_L001_I2_001.fastq.gz')
+
+def split_file(fname,lines_per_file):
+    count = 0
+    file_count = 0
+    buffer=[]
+    with open(fname as fopen):
+        while True
+            l = fopen.readline()
+            if not l: break
+            buffer += [l]
+            if len(buffer) == lines_per_file:
+                with open(fname+".split.{0}.{1}".format(lines_per_file,file_count)) as subf_open:
+                    subf_open.write("\n".join(buffer))
+                    file_count+=1
+                    buffer=[]
+            count+=1
 
 def fq(file, start=0, max_count=-1):
     count=0
@@ -163,6 +177,12 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     multiglobals.total_count=total_count
 
     from contextlib import closing
+
+
+    for fname in [read1,read2,index1,index2]:
+        split_file(fname,stride * 4)
+    raise Exception()
+
     with closing(Pool(processes=cores)) as p:
         #params = [i*stride for i in range(cores*10)]
         #logger.info('PARAMETERS {0}'.format(params))
