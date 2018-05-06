@@ -74,10 +74,6 @@ def read_core(start_record):
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
 
 
-        if len(r1s) == 0:
-            return "HIHIHI"
-
-
 
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(start_record,start_record+stride)]
 
@@ -87,7 +83,7 @@ def read_core(start_record):
         i1_map = dict([(k,[]) for k in keys])
         i2_map = dict([(k,[]) for k in keys])
 
-        for i,e in ids:
+        for i,e in enumerate(ids):
             r1_map[ids[i]] = r1s[i]
             r2_map[ids[i]] = r2s[i]
             i1_map[ids[i]] = i1s[i]
