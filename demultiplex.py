@@ -128,7 +128,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     #for r1,r2,i1,i2 in itertools.islice(it, 0, 100):
     start = time.time()
 
-    cores = 5
+    cores = 40
     stride = 10
     total_count = 0
 
@@ -136,19 +136,6 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     all_r2s = {}
     all_i1s = {}
     all_i2s = {}
-
-    print(read1)
-
-
-    #sharedTotalCount = Value("l", total_count)
-    #sharedStride = Value("l", stride)
-
-    #sharedRead1 = Array('u', [e for e in read1])
-    #sharedRead2 = Array('u', [e for e in read2])
-    #sharedIndex1 = Array('u', [e for e in index1])
-    #sharedIndex2 = Array('u', [e for e in index2])
-
-    #sharedSampleNames = Array('u',[e for e in " ".join(sample_names)])
 
     multiglobals.read1=read1
     multiglobals.read2=read2
@@ -163,17 +150,11 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     logger.info('Launching a pool with %d cores', cores)
 
     with closing(Pool(processes=cores)) as p:
-        #outs = [read_core(0),
-        #            read_core(1000)]
-        outs = p.map(read_core, [i*stride for i in range(cores)])
-        logger.info('Pool result: %d', len(" ".join(["{0}".format(o) for o in outs])))
+        outs = p.map(read_core, [i*stride for i in range(cores*100)])
         p.terminate()
 
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
-    logger.info('Results: %d', "\n ".join(["{0}".format(e) for e in outs]))
 
-
-    raise Exception()
     for e in outs:
             if e == None:
                 break
