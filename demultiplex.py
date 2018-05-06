@@ -138,8 +138,8 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     #for r1,r2,i1,i2 in itertools.islice(it, 0, 100):
     start = time.time()
 
-    cores = 40
-    stride = 1000000
+    cores = 20
+    stride = 500000
     total_count = 0
 
     all_r1s = {}
@@ -158,7 +158,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
     from contextlib import closing
     with closing(Pool(processes=cores)) as p:
-        outs = p.map(read_core, [i*stride for i in range(cores*1)])
+        outs = p.map(read_core, [i*stride for i in range(cores*2)])
         p.terminate()
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
