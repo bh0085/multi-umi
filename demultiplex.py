@@ -164,11 +164,12 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
             all_i2s.update(e[3])
 
     logger.info('Out dir {0}'.format( out_dir))
-    logger.info('Joined {0}'.format('%s.r1.fastq' % sample_id))
 
     for sample_id in all_r1s.keys():
 
         if len(all_r1s[sample_id]) >= min_reads:
+            logger.info('Joined {0}'.format('%s.r1.fastq' % sample_id))
+
             outfiles_r1[sample_id] = open(os.path.join(out_dir, '%s.r1.fastq' % sample_id), 'w')
             outfiles_r2[sample_id] = open(os.path.join(out_dir, '%s.r2.fastq' % sample_id), 'w')
             outfiles_i1[sample_id] = open(os.path.join(out_dir, '%s.i1.fastq' % sample_id), 'w')
