@@ -53,8 +53,8 @@ def fq(file, start=0, max_count=-1):
                 count+=1
                 continue
 
-            if max_count >0 and count >max_count: break
             count+=1
+            if max_count >=0 and count >max_count: break
 
             l1 = f.readline()
             if not l1:
