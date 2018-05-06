@@ -156,10 +156,10 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
             else:
                 total_count += len(e[0])
 
-            all_r1s.extend(e[0])
-            all_r2s.extend(e[1])
-            all_i1s.extend(e[2])
-            all_i2s.extend(e[3])
+            all_r1s.update(e[0])
+            all_r2s.update(e[1])
+            all_i1s.update(e[2])
+            all_i2s.update(e[3])
 
     for sample_id in all_r1s.keys():
 
