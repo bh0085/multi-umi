@@ -78,6 +78,8 @@ def get_sample_id(i1, i2, sample_names):
 def read_core(start_record):
         #return [1,2,3,4]
 
+
+
         stride=multiglobals.stride
 
         logger.info('Start point %d',start_record)
@@ -89,6 +91,8 @@ def read_core(start_record):
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
 
         logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
+        return [["AB"],["AC"],["AB"],["BC"]]
+
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
         logger.info('idx is {0}'.format(stride))
 
