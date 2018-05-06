@@ -124,7 +124,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     start = time.time()
 
     cores = 40
-    stride = 500000
+    stride = 1000000
     total_count = 0
 
     all_r1s = {}
@@ -147,13 +147,14 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
         p.terminate()
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
-    for e in outs:
-            if e == None: break
-            else: total_count += len(e[0])
-            all_r1s.update(e[0])
-            all_r2s.update(e[1])
-            all_i1s.update(e[2])
-            all_i2s.update(e[3])
+    for out in outs:
+        if out == None: break
+        else: total_count += len(e[0])
+        for k in out[0].keys():
+            if all_r1s[k]=all_r1s.get(k,[])+out[0][k]
+            if all_r2s[k]=all_r2s.get(k,[])+out[1][k]
+            if all_i1s[k]=all_i1s.get(k,[])+out[2][k]
+            if all_i2s[k]=all_i2s.get(k,[])+out[3][k]
 
     for sample_id in all_r1s.keys():
         if len(all_r1s[sample_id]) >= min_reads:
