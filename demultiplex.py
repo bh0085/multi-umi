@@ -95,7 +95,7 @@ def read_core(start_record):
 def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_reads=10000):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    logger.info('Out dir %d', out_dir)
+    logger.info('Out dir {0}'.format( out_dir))
 
 
     if type(sample_barcodes) != dict:
