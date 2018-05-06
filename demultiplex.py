@@ -98,7 +98,7 @@ def read_core(start_record):
         i1_map = dict([(k,[]) for k in keys])
         i2_map = dict([(k,[]) for k in keys])
 
-        logger.info('keys are {0}'.format(" ".join(list(keys))))
+        #logger.info('keys are {0}'.format(" ".join(list(keys))))
 
 
         for i,e in enumerate(ids):
@@ -142,7 +142,7 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     start = time.time()
 
     cores = 20
-    stride = 1000
+    stride = 10000
     total_count = 0
 
     all_r1s = {}
