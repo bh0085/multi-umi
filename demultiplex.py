@@ -91,6 +91,7 @@ def read_core(start_record):
         logger.info('Time passed is %d ', time.time() - multiglobals.starttime)
 
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
+        logger.info('idx is {0}'.format(stride))
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
