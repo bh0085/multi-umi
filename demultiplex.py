@@ -143,13 +143,13 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
 
     from contextlib import closing
     with closing(Pool(processes=cores)) as p:
-        outs = p.map(read_core, [i*stride for i in range(cores*5)])
+        outs = p.map(read_core, [i*stride for i in range(cores*1)])
         p.terminate()
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
     for out in outs:
         if out == None: break
-        else: total_count += len(e[0])
+        else: total_count += len(out[0])
         for k in out[0].keys():
             all_r1s[k]=all_r1s.get(k,[])+out[0][k]
             all_r2s[k]=all_r2s.get(k,[])+out[1][k]
