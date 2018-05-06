@@ -162,14 +162,15 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
             outfiles_r2[sample_id] = open(os.path.join(out_dir, '%s.r2.fastq' % sample_id), 'w')
             outfiles_i1[sample_id] = open(os.path.join(out_dir, '%s.i1.fastq' % sample_id), 'w')
             outfiles_i2[sample_id] = open(os.path.join(out_dir, '%s.i2.fastq' % sample_id), 'w')
+
             # Spill the buffers to sample-specific fastqs
-            for record in buffer_r1[sample_id] + r1:
+            for record in all_r1s[sample_id]:
                 outfiles_r1[sample_id].write(''.join(record))
-            for record in buffer_r2[sample_id] + r2:
+            for record in all_r2s[sample_id]:
                 outfiles_r2[sample_id].write(''.join(record))
-            for record in buffer_i1[sample_id] + i1:
+            for record in all_i1s[sample_id]:
                 outfiles_i1[sample_id].write(''.join(record))
-            for record in buffer_i2[sample_id] + i2:
+            for record in all_i2s[sample_id]:
                 outfiles_i2[sample_id].write(''.join(record))
 
             del all_r1s[sample_id]
