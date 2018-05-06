@@ -95,9 +95,6 @@ def read_core(start_record):
 
 
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
-        return [["AB"],["AC"],["AB"],["BC"]]
-
-        logger.info('idx is {0}'.format(stride))
 
         keys = set(ids)
         r1_map = dict([(k,[]) for k in keys])
@@ -114,7 +111,6 @@ def read_core(start_record):
             i1_map[ids[i]] = i1s[i]
             i2_map[ids[i]] = i2s[i]
 
-        raise Exception()
         logger.info('out value is {0}'.format(r1_map.keys()))
 
         return [r1_map, r2_map, i1_map, i2_map]
