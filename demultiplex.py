@@ -73,8 +73,6 @@ def read_core(start_record):
         i1s = list(fq("".join(multiglobals.index1),start=start_record,max_count=stride))
         i2s = list(fq("".join(multiglobals.index2),start=start_record,max_count=stride))
 
-
-
         ids = [get_sample_id(i1s[idx],i2s[idx],multiglobals.sample_names) for idx in range(0,stride)]
 
         keys = set(ids)
@@ -84,6 +82,8 @@ def read_core(start_record):
         i2_map = dict([(k,[]) for k in keys])
 
         for i,e in enumerate(ids):
+            logger.info('sample_id {0}'.format(e))
+
             r1_map[ids[i]] = r1s[i]
             r2_map[ids[i]] = r2s[i]
             i1_map[ids[i]] = i1s[i]
@@ -153,23 +153,17 @@ def demultiplex(read1, read2, index1, index2, sample_barcodes, out_dir, min_read
     logger.info('Pool yielded %d results from %d cores', len(outs), cores)
 
     for e in outs:
-            if e == None:
-                break
-            else:
-                total_count += len(e[0])
-
+            if e == None: break
+            else: total_count += len(e[0])
             all_r1s.update(e[0])
             all_r2s.update(e[1])
             all_i1s.update(e[2])
             all_i2s.update(e[3])
 
-    logger.info('Out dir {0}'.format( out_dir))
-
+    #logger.info('Out dir {0}'.format( out_dir))
     for sample_id in all_r1s.keys():
-
         if len(all_r1s[sample_id]) >= min_reads:
-            logger.info('Joined {0}'.format('%s.r1.fastq' % sample_id))
-
+            #logger.info('Joined {0}'.format('%s.r1.fastq' % sample_id))
             outfiles_r1[sample_id] = open(os.path.join(out_dir, '%s.r1.fastq' % sample_id), 'w')
             outfiles_r2[sample_id] = open(os.path.join(out_dir, '%s.r2.fastq' % sample_id), 'w')
             outfiles_i1[sample_id] = open(os.path.join(out_dir, '%s.i1.fastq' % sample_id), 'w')
